@@ -35,7 +35,7 @@ func (h *Handler) Faculty(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 	f := &Faculty{}
 
-	ok := request.ReadFormDataAndValidate(w, r, &f)
+	ok := request.ReadFormDataAndValidate(w, r, f)
 	if !ok {
 		return
 	}

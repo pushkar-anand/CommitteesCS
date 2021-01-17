@@ -2,6 +2,7 @@ package request
 
 import (
 	"committees/config"
+	"committees/helpers"
 	"committees/validation"
 	"fmt"
 	"github.com/gorilla/schema"
@@ -13,7 +14,8 @@ var decoder = schema.NewDecoder()
 func ReadFormDataAndValidate(w http.ResponseWriter, r *http.Request, v interface{}) bool {
 	err := ReadFormData(r, v)
 	if err != nil {
-		config.GetLogger().Error(err)
+		config.GetLogger().WithError(err).Error("error reading form")
+		helpers.InternalError(w)
 		return false
 	}
 
