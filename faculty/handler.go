@@ -24,8 +24,11 @@ func (h *Handler) Faculty(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	template.Render(w, "faculty.html", faculties)
+	data := map[string]interface{}{
+		"Faculties": faculties,
+	}
 
+	template.Render(w, "faculty.html", data)
 }
 
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
