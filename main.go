@@ -2,6 +2,7 @@ package main
 
 import (
 	"committees/config"
+	"committees/template"
 )
 
 func main() {
@@ -11,6 +12,8 @@ func main() {
 	logger := config.GetLogger()
 
 	server := NewServer(logger, appConfig)
+
+	template.ParseTemplates()
 
 	server.Initialize()
 
