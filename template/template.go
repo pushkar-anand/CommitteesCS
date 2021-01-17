@@ -31,7 +31,6 @@ func ParseTemplates() {
 	}
 
 	templates = templ
-	log.Printf(templates.DefinedTemplates())
 	return
 }
 
