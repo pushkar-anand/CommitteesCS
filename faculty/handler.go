@@ -47,5 +47,5 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/dashboard/faculty", http.StatusCreated)
+	http.Redirect(w, r, "/dashboard/faculty", http.StatusSeeOther)
 }
