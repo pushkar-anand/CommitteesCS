@@ -3,7 +3,6 @@ module committees
 go 1.15
 
 require (
-	github.com/apache/thrift v0.12.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-playground/validator/v10 v10.3.0
@@ -13,8 +12,6 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/magiconair/properties v1.8.4 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
-	github.com/neo4j-drivers/gobolt v1.7.4 // indirect
-	github.com/openzipkin/zipkin-go v0.1.6 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/afero v1.5.1 // indirect
@@ -32,5 +29,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200605160147-a5ece683394c // indirect
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/gorm v1.20.11
-	gotest.tools/v3 v3.0.2 // indirect
 )
