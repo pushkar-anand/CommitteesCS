@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Model struct {
-	ID        uint      `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        uint      `gorm:"id" schema:"-"`
+	CreatedAt time.Time `gorm:"created_at" schema:"-"`
+	UpdatedAt time.Time `gorm:"updated_at" schema:"-"`
 }

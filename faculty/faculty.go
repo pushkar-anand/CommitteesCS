@@ -4,8 +4,8 @@ import "committees/db/model"
 
 type Faculty struct {
 	model.Model
-	Name        *string `json:"name"`
-	Designation *string `json:"designation"`
+	Name        *string `gorm:"name" schema:"name,required" validate:"required,trim,printascii"`
+	Designation *string `gorm:"designation" schema:"designation,required" validate:"required,trim,printascii"`
 }
 
 func (f Faculty) TableName() string {

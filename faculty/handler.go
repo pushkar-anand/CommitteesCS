@@ -2,6 +2,7 @@ package faculty
 
 import (
 	"committees/helpers"
+	"committees/request"
 	"committees/template"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -32,5 +33,19 @@ func (h *Handler) Faculty(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
+	f := &Faculty{}
 
+	ok := request.ReadFormDataAndValidate(w, r, &f)
+	if !ok {
+		return
+	}
+
+	err := h.repository.Create(f)
+	if err != nil {
+		h.logger.WithError(err).Error("error adding faculty to DB")
+		helpers.InternalError(w)
+		return
+	}
+
+	http.Redirect(w, r, "/dashboard/faculty", http.StatusCreated)
 }
