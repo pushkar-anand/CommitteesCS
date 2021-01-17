@@ -1,6 +1,8 @@
 package template
 
 import (
+	"committees/config"
+	"committees/helpers"
 	"html/template"
 	"log"
 	"net/http"
@@ -33,7 +35,13 @@ func ParseTemplates() {
 	return
 }
 
-func Render(w http.ResponseWriter, templateName string, data interface{}) error {
+func Render(w http.ResponseWriter, templateName string, data interface{}) {
+	logger := config.GetLogger()
+
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	return templates.ExecuteTemplate(w, templateName, data)
+	err := templates.ExecuteTemplate(w, templateName, data)
+	if err != nil {
+		logger.WithError(err).Errorf("error rendering template: %s", templateName)
+		helpers.InternalError(w)
+	}
 }

@@ -6,6 +6,10 @@ type Repository struct {
 	db *db.DB
 }
 
+func NewRepository(db *db.DB) *Repository {
+	return &Repository{db: db}
+}
+
 func (r *Repository) Create(f *Faculty) error {
 	return r.db.Conn.Create(f).Error
 }
