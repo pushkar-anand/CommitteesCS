@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>Faculty</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <linl type="text/css" href="/static/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+
+    <nav class="grey darken-3">
+        <div class="container top-nav">
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo">Committee</a>
+                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="fa fa-bars fa-2x"></i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/dashboard">dashboard</a></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {{if .Faculties}}
+    <table class="striped z-depth-1">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{range .Faculties}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Name}}</td>
+            <td><span >{{.Designation}}</span></td>
+            <td><a class="btn center left-align green accent-4 waves-effect waves-light  mb" href="/dashboard/faculty/edit/"><i class="fa fa-pencil"></i>
+                Edit</a>
+<!--                <form method="POST" action="/dashboard/faculty/delete/{.id}" id="delete-form">-->
+<!--                    <button type="submit" class="btn center mb red waves-effect waves-light"><i class="fa fa-trash"></i> Delete</button>-->
+<!--                </form>-->
+            </td>
+
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+
+    {{else}}
+    <p>No faculty data</p>
+    {{end}}
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="/static/js/materialize.min.js"></script>
+</body>
+</html>

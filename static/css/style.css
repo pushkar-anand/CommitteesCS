@@ -1,0 +1,41 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    margin-top: 20px;
+}
+
+.story-text {
+    height: 70px;
+}
+
+.dash-status {
+    text-transform: capitalize;
+}
+
+#delete-form {
+    display: inline;
+}
+
+.mb {
+    margin-bottom: 5px;
+}
+
+.green {
+    padding: 0 20px;
+}
+
+.fa-pencil {
+    padding: 0 10px 0 0px;
+}
+
+.tb-mr {
+    margin-left: 150px;
+}
