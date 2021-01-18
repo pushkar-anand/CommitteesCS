@@ -1,4 +1,4 @@
-package student
+package events
 
 import (
 	"committees/helpers"
@@ -17,23 +17,23 @@ func NewHandler(logger *logrus.Logger, repository *Repository) *Handler {
 	return &Handler{logger: logger, repository: repository}
 }
 
-func (h *Handler) Student(w http.ResponseWriter, r *http.Request) {
-	students, err := h.repository.FetchAll()
+func (h *Handler) Event(w http.ResponseWriter, r *http.Request) {
+	events, err := h.repository.FetchAll()
 	if err != nil {
-		h.logger.WithError(err).Error("error fetching students from DB")
+		h.logger.WithError(err).Error("error fetching events from DB")
 		helpers.InternalError(w)
 		return
 	}
 
 	data := map[string]interface{}{
-		"Students": students,
+		"Events": events,
 	}
 
-	template.Render(w, "students.html", data)
+	template.Render(w, "events.html", data)
 }
 
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
-	s := &Student{}
+	s := &Event{}
 
 	ok := request.ReadFormDataAndValidate(w, r, s)
 	if !ok {
@@ -42,10 +42,10 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 
 	err := h.repository.Create(s)
 	if err != nil {
-		h.logger.WithError(err).Error("error adding students to DB")
+		h.logger.WithError(err).Error("error adding events to DB")
 		helpers.InternalError(w)
 		return
 	}
 
-	http.Redirect(w, r, "/dashboard/students", http.StatusSeeOther)
+	http.Redirect(w, r, "/dashboard/events", http.StatusSeeOther)
 }

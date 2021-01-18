@@ -3,6 +3,7 @@ package main
 import (
 	"committees/committee"
 	"committees/db"
+	"committees/events"
 	"committees/faculty"
 	"committees/student"
 	"github.com/sirupsen/logrus"
@@ -41,4 +42,10 @@ func addRoutes(r *mux.Router, logger *logrus.Logger) {
 	cr := dr.PathPrefix("/committees").Subrouter()
 
 	committee.AddRoutes(cr, ch)
+
+	eventsRepo := events.NewRepository(dbConn)
+	eh := events.NewHandler(logger, eventsRepo)
+	er := dr.PathPrefix("/events").Subrouter()
+
+	events.AddRoutes(er, eh)
 }

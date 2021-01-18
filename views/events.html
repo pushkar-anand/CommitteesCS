@@ -1,0 +1,130 @@
+<html>
+<head>
+    <title>Events</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+    <nav class="grey darken-3">
+        <div class="container top-nav">
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo">Committee</a>
+                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i
+                        class="fa fa-bars fa-2x"></i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/dashboard">dashboard</a></li>
+                    <!--                    <li><a href="/logout"><i class="fa fa-sign-out"></i>Logout</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="button container">
+        <!-- Modal Trigger -->
+        <a class="add-btn waves-effect waves-light btn modal-trigger green lighten-2 " href="#modal1">Add New Event</a>
+
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal">
+            <form class="col s12" method="post" action="/dashboard/events/add">
+                <div class="modal-content">
+                    <div class="row">
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Enter the Event Name" id="name" name="name" type="text"
+                                       class="validate">
+                                <label for="name">Event Name</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Enter the event start date" id="start_date" name="start_date"
+                                       type="date" class="validate">
+                                <label for="start_date">Start Date</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Enter the event end date" id="end_date" name="end_date"
+                                       type="date" class="validate">
+                                <label for="end_date">End Date</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input placeholder="Enter the the Event Total expenditure" id="total_expenditure"
+                                       name="total_expenditure"
+                                       type="text" class="validate">
+                                <label for="total_expenditure">Total Expenditure</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Create"
+                           class=" waves-effect waves-green btn-flat green lighten-1 submit-btn"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{if .Events}}
+    <table class="container striped z-depth-1">
+        <thead>
+        <tr>
+            <th></th>
+            <th>id</th>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Total Expenditure</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{range .Events}}
+        <tr>
+            <td></td>
+            <td>{{.ID}}</td>
+            <td>{{.Name}}</td>
+            <td><span>{{.StartDate}}</span></td>
+            <td><span>{{.EndDate}}</span></td>
+            <td><span>{{.TotalExpenditure}}</span></td>
+<!--            <td><a class="btn center left-align green accent-4 waves-effect waves-light  mb"-->
+<!--                   href="/dashboard/events/edit/"><i class="fa fa-pencil"></i>-->
+<!--                Edit</a>-->
+                <!--                <form method="POST" action="/dashboard/faculty/delete/{.id}" id="delete-form">-->
+                <!--                    <button type="submit" class="btn center mb red waves-effect waves-light"><i class="fa fa-trash"></i> Delete</button>-->
+                <!--                </form>-->
+            </td>
+
+        </tr>
+        {{end}}
+        </tbody>
+    </table>
+
+    {{else}}
+    <p>No Events data</p>
+    {{end}}
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, {});
+        });
+
+    </script>
+</body>
+</html>
