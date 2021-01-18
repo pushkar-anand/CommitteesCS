@@ -86,9 +86,11 @@
         <td>{{.Name}}</td>
         <td>
             {{if .Members}}
-            {{range .Members}}
-            <p class="member">{{.Name}}</p>
-            {{ end }}
+            <ol>
+                {{range .Members}}
+                <li class="member"> {{.Name}}</li>
+                {{ end }}
+            </ol>
             {{ else }}
             <p>No Members</p>
             {{ end }}
