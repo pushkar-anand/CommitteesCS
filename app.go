@@ -3,6 +3,7 @@ package main
 import (
 	"committees/db"
 	"committees/faculty"
+	"committees/student"
 	"github.com/sirupsen/logrus"
 	"net/http"
 
@@ -26,4 +27,11 @@ func addRoutes(r *mux.Router, logger *logrus.Logger) {
 	fr := dr.PathPrefix("/faculty").Subrouter()
 
 	faculty.AddRoutes(fr, fh)
+
+//	Student endpoint (comment can be removed latter)
+	studentRepo := student.NewRepository(dbConn)
+	sh := student.NewHandler(logger, studentRepo)
+	sr := dr.PathPrefix("/students").Subrouter()
+
+	student.AddRoutes(sr, sh)
 }
