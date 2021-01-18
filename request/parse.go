@@ -4,12 +4,33 @@ import (
 	"committees/config"
 	"committees/helpers"
 	"committees/validation"
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/schema"
 	"net/http"
 )
 
 var decoder = schema.NewDecoder()
+
+func ReadJSONAndValidate(w http.ResponseWriter, r *http.Request, v interface{}) bool {
+	err := ReadJSONRequest(r, v)
+	if err != nil {
+		config.GetLogger().Error(err)
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		w.Write([]byte("Invalid JSON received"))
+		return false
+	}
+
+	// TODO improve error handling
+	ve := validate(v)
+	if ve != nil && len(ve) > 0 {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		fmt.Fprintf(w, "%v is not valid", ve)
+		return false
+	}
+
+	return true
+}
 
 func ReadFormDataAndValidate(w http.ResponseWriter, r *http.Request, v interface{}) bool {
 	err := ReadFormData(r, v)
@@ -36,6 +57,10 @@ func ReadFormData(r *http.Request, v interface{}) error {
 	}
 
 	return decoder.Decode(v, r.PostForm)
+}
+
+func ReadJSONRequest(r *http.Request, v interface{}) error {
+	return json.NewDecoder(r.Body).Decode(v)
 }
 
 func validate(v interface{}) []string {

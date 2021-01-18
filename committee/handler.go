@@ -28,8 +28,16 @@ func (h *Handler) Committee(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	faculties, err := h.repository.FetchFaculties()
+	if err != nil {
+		h.logger.WithError(err).Error("error fetching faculties from DB")
+		helpers.InternalError(w)
+		return
+	}
+
 	data := map[string]interface{}{
 		"Committees": committees,
+		"Faculties":  faculties,
 	}
 
 	template.Render(w, "committee.html", data)
@@ -38,7 +46,7 @@ func (h *Handler) Committee(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 	c := &Committee{}
 
-	ok := request.ReadFormDataAndValidate(w, r, c)
+	ok := request.ReadJSONAndValidate(w, r, c)
 	if !ok {
 		return
 	}

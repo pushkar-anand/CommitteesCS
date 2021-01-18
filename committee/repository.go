@@ -2,6 +2,7 @@ package committee
 
 import (
 	"committees/db"
+	"committees/faculty"
 )
 
 type Repository struct {
@@ -39,6 +40,17 @@ func (r *Repository) FetchAll() ([]*Committee, error) {
 	faculties := make([]*Committee, 0)
 
 	err := r.db.Conn.Model(&Committee{}).Preload("Members").Find(&faculties).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return faculties, nil
+}
+
+func (r *Repository) FetchFaculties() ([]*faculty.Faculty, error) {
+	faculties := make([]*faculty.Faculty, 0)
+
+	err := r.db.Conn.Model(&faculty.Faculty{}).Find(&faculties).Error
 	if err != nil {
 		return nil, err
 	}

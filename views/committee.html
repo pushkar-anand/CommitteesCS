@@ -7,7 +7,7 @@
     <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css" media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
-    <link type="text/css" rel="stylesheet" href="/static/css/style.css" />
+    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
@@ -33,7 +33,7 @@
 
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
-        <form class="col s12" method="post" action="/dashboard/committees/add">
+        <form class="col s12" method="post" action="/dashboard/committees/add" name="add-committee-form">
             <div class="modal-content">
                 <div class="row">
 
@@ -44,10 +44,24 @@
                             <label for="name">Name</label>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select multiple name="members">
+                                <option value="" disabled>Choose Faculties</option>
+                                {{range .Faculties}}
+                                <option value="{{ .ID }}:{{ .Name }}:{{ .Designation }}">{{ .Name }}</option>
+                                {{ end }}
+                            </select>
+                            <label>Committee Members</label>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <div class="modal-footer" >
-                <input type="submit" value="Create" class=" waves-effect waves-green btn-flat green lighten-1 submit-btn" />
+            <div class="modal-footer">
+                <input type="submit" value="Create"
+                       class=" waves-effect waves-green btn-flat green lighten-1 submit-btn"/>
             </div>
         </form>
     </div>
@@ -72,11 +86,11 @@
         <td>{{.Name}}</td>
         <td>
             {{if .Members}}
-                {{range .Members}}
-                    <p class="member">{{.Name}}</p>
-                {{ end }}
+            {{range .Members}}
+            <p class="member">{{.Name}}</p>
+            {{ end }}
             {{ else }}
-                <p>No Members</p>
+            <p>No Members</p>
             {{ end }}
         </td>
         <td><a class="btn center left-align green accent-4 waves-effect waves-light  mb"
@@ -99,8 +113,52 @@
 <script type="text/javascript" src="/static/js/materialize.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems, {});
+        let elems = document.querySelectorAll('.modal');
+        M.Modal.init(elems, {});
+
+        elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems, {});
+
+        const committeeForm = document.forms.namedItem("add-committee-form");
+
+        committeeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const nameInput = committeeForm.elements.namedItem("name");
+            const membersInput = committeeForm.elements.namedItem("members")
+            const membersInstance = M.FormSelect.getInstance(membersInput);
+
+            const members = [];
+
+            membersInstance.getSelectedValues().forEach(((opt) => {
+                const arr = opt.split(":")
+                members.push({
+                    "id": parseInt(arr[0]),
+                    "name": arr[1],
+                    "designation": arr[2]
+                })
+            }));
+
+            const postData = {
+                "name": nameInput.value,
+                "members": members,
+            }
+
+            let headers = new Headers({
+                    "Content-Type": "application/json",
+                }
+            )
+
+
+            fetch(committeeForm.action, {
+                method: "POST",
+                body: JSON.stringify(postData),
+                headers: headers
+            }).then(() => {
+                location.reload()
+            })
+        })
+
     });
 
 </script>

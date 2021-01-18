@@ -7,8 +7,8 @@ import (
 
 type Committee struct {
 	model.Model
-	Name    *string            `gorm:"name" schema:"name,required" validate:"required,trim,printascii"`
-	Members []*faculty.Faculty `gorm:"many2many:committee_members;"`
+	Name    *string            `gorm:"name" schema:"name,required" validate:"required,trim,printascii" json:"name"`
+	Members []*faculty.Faculty `gorm:"many2many:committee_members;" schema:"members,required" json:"members"`
 }
 
 type Members struct {
