@@ -39,3 +39,19 @@ footer {
 .tb-mr {
     margin-left: 150px;
 }
+
+.button a{
+    margin: 1rem;
+    float: right;
+    width: auto;
+
+}
+
+.modal-footer{
+    text-align: center;
+}
+
+.waves-button-input{
+    color: #fff;
+    text-align: center;
+}
