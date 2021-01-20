@@ -3,12 +3,15 @@ package committee
 import (
 	"committees/db/model"
 	"committees/faculty"
+	"time"
 )
 
 type Committee struct {
 	model.Model
-	Name    *string            `gorm:"name" schema:"name,required" validate:"required,trim,printascii" json:"name"`
-	Members []*faculty.Faculty `gorm:"many2many:committee_members;" schema:"members,required" json:"members"`
+	Name        *string            `gorm:"name" schema:"name,required" validate:"required,trim,printascii" json:"name"`
+	Description *string            `gorm:"description" schema:"description,required" validate:"required,trim,printascii" json:"description"`
+	Created     time.Time          `gorm:"creation_date" schema:"creation_date,required" validate:"required,trim,printascii" json:"creation_date"`
+	Members     []*faculty.Faculty `gorm:"many2many:committee_members;" schema:"members,required" json:"members"`
 }
 
 type Members struct {

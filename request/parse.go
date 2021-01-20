@@ -2,15 +2,23 @@ package request
 
 import (
 	"committees/config"
+	"committees/db/model"
 	"committees/helpers"
 	"committees/validation"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/schema"
 	"net/http"
+	"reflect"
 )
 
 var decoder = schema.NewDecoder()
+
+func init() {
+	decoder.RegisterConverter(model.Date{}, func(s string) reflect.Value {
+
+	})
+}
 
 func ReadJSONAndValidate(w http.ResponseWriter, r *http.Request, v interface{}) bool {
 	err := ReadJSONRequest(r, v)

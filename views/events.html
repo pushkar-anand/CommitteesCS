@@ -98,8 +98,8 @@
             <td></td>
             <td>{{.ID}}</td>
             <td>{{.Name}}</td>
-            <td><span>{{.StartDate}}</span></td>
-            <td><span>{{.EndDate}}</span></td>
+            <td><span>{{.StartDate.Format "Jan 02, 2006"}}</span></td>
+            <td><span>{{.EndDate.Format "Jan 02, 2006"}}</span></td>
             <td><span>{{.TotalExpenditure}}</span></td>
 <!--            <td><a class="btn center left-align green accent-4 waves-effect waves-light  mb"-->
 <!--                   href="/dashboard/events/edit/"><i class="fa fa-pencil"></i>-->
