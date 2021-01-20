@@ -2,7 +2,6 @@ package request
 
 import (
 	"committees/config"
-	"committees/db/model"
 	"committees/helpers"
 	"committees/validation"
 	"encoding/json"
@@ -10,13 +9,18 @@ import (
 	"github.com/gorilla/schema"
 	"net/http"
 	"reflect"
+	"time"
 )
 
 var decoder = schema.NewDecoder()
 
 func init() {
-	decoder.RegisterConverter(model.Date{}, func(s string) reflect.Value {
-
+	fmt.Print("init called")
+	decoder.RegisterConverter(time.Time{}, func(s string) reflect.Value {
+		if v, err := time.Parse("2006-01-02", s); err == nil {
+			return reflect.ValueOf(v)
+		}
+		return reflect.Value{}
 	})
 }
 
