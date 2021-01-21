@@ -119,7 +119,7 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 
 		for _, m := range s.Members {
 			//member = append(member, ", "+*m.Name)
-			member = member + ",\n " + *m.Name
+			member += fmt.Sprintf("%s, ", *m.Name)
 		}
 
 		d = append(d, member)
@@ -135,4 +135,3 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 
 	wr.Flush()
 }
-
