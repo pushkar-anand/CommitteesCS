@@ -123,7 +123,7 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 		}
 
 		d = append(d, member)
-		d = append(d, s.CreationDate.String())
+		d = append(d, s.CreationDate.Format("Jan 02, 2006"))
 
 		err = wr.Write(d)
 		if err != nil {

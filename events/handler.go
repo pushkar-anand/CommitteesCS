@@ -75,8 +75,8 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 	for _, s := range students {
 		d := make([]string, 0)
 		d = append(d, derefString(s.Name))
-		d = append(d, s.StartDate.String())
-		d = append(d, s.EndDate.String())
+		d = append(d, s.StartDate.Format("Jan 02, 2006"))
+		d = append(d, s.EndDate.Format("Jan 02, 2006"))
 		d = append(d, derefString(s.TotalExpenditure))
 
 		err = wr.Write(d)
