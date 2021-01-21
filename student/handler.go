@@ -59,7 +59,6 @@ func derefString(s *string) string {
 	return ""
 }
 
-// Pushker just call me when you read this comment
 func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 	students, err := h.repository.FetchAll()
 	if err != nil {
@@ -72,7 +71,7 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 
 	data = append(data, []string{"Name", "Email", "Phone", "USN"})
 
-	for _, s :=range students {
+	for _, s := range students {
 		d := make([]string, 0)
 		d = append(d, derefString(s.Name))
 		d = append(d, derefString(s.Email))
@@ -87,7 +86,10 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 	wr := csv.NewWriter(w)
 	err = wr.WriteAll(data)
 	if err != nil {
-		http.Error(w, "Error sending csv: "+err.Error(), http.StatusInternalServerError)
+		h.logger.WithError(err).Error("error writing csv response")
+		helpers.InternalError(w)
 		return
 	}
+
+	wr.Flush()
 }
