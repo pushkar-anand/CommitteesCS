@@ -8,5 +8,6 @@ import (
 func AddRoutes(r *mux.Router, h *Handler) {
 	r.HandleFunc("/", h.Committee).Methods(http.MethodGet)
 	r.HandleFunc("/add", h.Add).Methods(http.MethodPost)
+	r.HandleFunc("/csv", h.Csv).Methods(http.MethodGet)
 	r.HandleFunc("/{committee_id}/faculty/{faculty_id}", h.AddFaculty).Methods(http.MethodPost)
 }

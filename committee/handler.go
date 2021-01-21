@@ -4,6 +4,7 @@ import (
 	"committees/helpers"
 	"committees/request"
 	"committees/template"
+	"encoding/csv"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -87,3 +88,51 @@ func (h *Handler) AddFaculty(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/dashboard/committees", http.StatusSeeOther)
 }
+
+func derefString(s *string) string {
+	if s != nil {
+		return *s
+	}
+
+	return ""
+}
+
+func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
+	committees, err := h.repository.FetchAll()
+	if err != nil {
+		h.logger.WithError(err).Error("error fetching students from DB")
+		helpers.InternalError(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Disposition", "attachment;filename=Committees.csv")
+	wr := csv.NewWriter(w)
+	_ = wr.Write([]string{"Name", "Description", "Members", "Created At"})
+
+	for _, s := range committees {
+		d := make([]string, 0)
+		d = append(d, derefString(s.Name))
+		d = append(d, derefString(s.Description))
+
+		member := ""
+
+		for _, m := range s.Members {
+			//member = append(member, ", "+*m.Name)
+			member = member + ",\n " + *m.Name
+		}
+
+		d = append(d, member)
+		d = append(d, s.CreationDate.String())
+
+		err = wr.Write(d)
+		if err != nil {
+			h.logger.WithError(err).Error("error writing csv response")
+			helpers.InternalError(w)
+			return
+		}
+	}
+
+	wr.Flush()
+}
+

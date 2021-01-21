@@ -67,9 +67,10 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := make([][]string, 0)
-
-	data = append(data, []string{"Name", "Email", "Phone", "USN"})
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Disposition", "attachment;filename=student.csv")
+	wr := csv.NewWriter(w)
+	_ = wr.Write([]string{"Name", "Email", "Phone", "USN"})
 
 	for _, s := range students {
 		d := make([]string, 0)
@@ -78,17 +79,12 @@ func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
 		d = append(d, derefString(s.Phone))
 		d = append(d, derefString(s.Usn))
 
-		data = append(data, d)
-	}
-
-	w.Header().Set("Content-Type", "text/csv")
-	w.Header().Set("Content-Disposition", "attachment;filename=TheCSVFileName.csv")
-	wr := csv.NewWriter(w)
-	err = wr.WriteAll(data)
-	if err != nil {
-		h.logger.WithError(err).Error("error writing csv response")
-		helpers.InternalError(w)
-		return
+		err = wr.Write(d)
+		if err != nil {
+			h.logger.WithError(err).Error("error writing csv response")
+			helpers.InternalError(w)
+			return
+		}
 	}
 
 	wr.Flush()

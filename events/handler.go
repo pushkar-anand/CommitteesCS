@@ -4,6 +4,7 @@ import (
 	"committees/helpers"
 	"committees/request"
 	"committees/template"
+	"encoding/csv"
 	"github.com/sirupsen/logrus"
 	"net/http"
 )
@@ -49,3 +50,43 @@ func (h *Handler) Add(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/dashboard/events", http.StatusSeeOther)
 }
+
+func derefString(s *string) string {
+	if s != nil {
+		return *s
+	}
+
+	return ""
+}
+
+func (h *Handler) Csv(w http.ResponseWriter, r *http.Request) {
+	students, err := h.repository.FetchAll()
+	if err != nil {
+		h.logger.WithError(err).Error("error fetching students from DB")
+		helpers.InternalError(w)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Disposition", "attachment;filename=Events.csv")
+	wr := csv.NewWriter(w)
+	_ = wr.Write([]string{"Name", "Start Date", "End Date", "USN"})
+
+	for _, s := range students {
+		d := make([]string, 0)
+		d = append(d, derefString(s.Name))
+		d = append(d, s.StartDate.String())
+		d = append(d, s.EndDate.String())
+		d = append(d, derefString(s.TotalExpenditure))
+
+		err = wr.Write(d)
+		if err != nil {
+			h.logger.WithError(err).Error("error writing csv response")
+			helpers.InternalError(w)
+			return
+		}
+	}
+
+	wr.Flush()
+}
+
